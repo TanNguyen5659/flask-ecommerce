@@ -42,18 +42,7 @@ class AddItem(MethodView):
                 like.delete()
 
             return {'message':"deleted"}, 201
-        abort(400, message="Invalid User or Product")
-
-
-    @bp.response(200, UserSchema(many=True))
-    def get(self, product_id):
-        product = ProductModel.query.get(product_id)
-        if not product:
-            abort(400, message="Invalid Product")
-
-        items = AddToModel.query.filter_by(product_id = product_id).all()
-
-        return [UserModel.query.get(like.user_id) for item in items]    
+        abort(400, message="Invalid User or Product")  
 
 @bp.route('/view-cart/<user_id>')
 class ViewCart(MethodView):
