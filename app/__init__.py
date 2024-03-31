@@ -16,13 +16,13 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from models.user_model import UserModel
-from models.post_model import PostModel
-from models.like_post_model import LikePostModel
+from models.product_model import ProductModel
+from models.add_to_cart_model import AddToModel
 
-from resources.post import bp as post_bp
-app.register_blueprint(post_bp)
+from resources.product import bp as product_bp
+app.register_blueprint(product_bp)
 from resources.user import bp as user_bp
 app.register_blueprint(user_bp)
-from resources.like_post import bp as like_post_bp
-app.register_blueprint(like_post_bp)
+from resources.add_to_cart import bp as add_to_cart_bp
+app.register_blueprint(add_to_cart_bp)
 
