@@ -11,7 +11,7 @@ from models.product_model import ProductModel
 from schemas import ProductSchema, UserSchema
 
 
-@bp.route('/like-post/<product_id>')
+@bp.route('/add-item/<product_id>')
 class AddItem(MethodView):
 
     @jwt_required()
@@ -55,18 +55,6 @@ class AddItem(MethodView):
 
         return [UserModel.query.get(like.user_id) for item in items]    
 
-# @bp.route('/view-cart/<user_id>')
-# class ViewCart(MethodView):
-#     @bp.response(200, ProductSchema(many=True))
-#     def get(self, user_id):
-#         user = UserModel.query.get(user_id)
-#         if not user:
-#             abort(400, message="Invalid User")
-
-#         likes = AddToModel.query.filter_by(user_id = user_id).all()
-
-#         return [ProductModel.query.get(like.product_id) for like in likes] 
-    
 @bp.route('/view-cart/<user_id>')
 class ViewCart(MethodView):
     @bp.response(200, ProductSchema(many=True))
@@ -83,6 +71,16 @@ class ViewCart(MethodView):
         print(f"Total calculated: {total}")
 
 
-        # Combine products and total into a dictionary for consistent response format
-        response_data = {'products': products, 'total': total}
-        return response_data
+        # response_data = {'products': products, 'total': total}
+        return products
+    
+@bp.route('/clear-cart/<user_id>', methods=['DELETE'])
+@jwt_required()
+def clear_cart(user_id):
+    user = UserModel.query.get(user_id)
+    if user:
+        added = AddToModel.query.filter_by(user_id=user_id).all()
+        for item in added:
+            item.delete() 
+        return {'message': "Cart cleared"}, 204  
+    abort(400, message="User not found")
