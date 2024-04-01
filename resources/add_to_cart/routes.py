@@ -38,8 +38,8 @@ class AddItem(MethodView):
         if user and product:
             added = AddToModel.query.filter_by(product_id = product_id).filter_by(user_id = user_id).all()
             
-            for like in added:
-                like.delete()
+            for item in added:
+                item.delete()
 
             return {'message':"deleted"}, 201
         abort(400, message="Invalid User or Product")  
@@ -53,11 +53,9 @@ class ViewCart(MethodView):
             abort(400, message="Invalid User")
 
         items = AddToModel.query.filter_by(user_id=user_id).all()
-        print(f"Number of likes retrieved: {len(items)}")
         products = [ProductModel.query.get(item.product_id) for item in items]
-        print(f"Number of products retrieved: {len(products)}")
         total = len(products)
-        print(f"Total calculated: {total}")
+        print(f"Number of products: {total}")
 
 
         # response_data = {'products': products, 'total': total}

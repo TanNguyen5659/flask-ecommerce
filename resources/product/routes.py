@@ -37,24 +37,7 @@ class Product(MethodView):
             return ProductModel.query.get(product_id)
         except:
             abort(400, message="Product not found")
-
-    # @bp.arguments(ProductSchema)
-    # @bp.response(201, ProductSchema)
-    # def put(self, product_data, product_id):
             
-    #     print(product_data)
-    #     product = ProductModel.query.get(product_id)
-    #     if not product:
-    #         abort(400, message="product not found")
-
-    #     if product_data['user_id'] == product.user_id:
-    #         og_user_id = product.user_id
-    #         product.from_dict(product_data)
-    #         product.user_id = og_user_id
-
-    #         product.save_product()
-    #         return product
-
     def delete(self, product_id):
 
         product = ProductModel.query.get(product_id)
